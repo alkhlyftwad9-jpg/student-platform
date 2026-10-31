@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة طالب العلم - الخدمة الأكاديمية والشرعية</title>
+    <title>منصة طالب العلم - الشاملة والتعليمية</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Amiri & Tajawal -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        scholar: {
-                            gold: '#D4AF37',
-                            goldLight: '#F4E0A5',
-                            navy: '#0B132B',
-                            navyLight: '#1C2541',
-                            card: '#162032',
-                            accent: '#3A506B'
-                        }
+                        gold: '#D4AF37',
+                        lightGold: '#F4E0A5',
+                        navy: '#0B132B',
+                        slateNavy: '#1C2541',
+                        cardBg: '#162032',
+                        accent: '#3A506B'
                     },
                     fontFamily: {
-                        tajawal: ['Tajawal', 'sans-serif'],
-                        amiri: ['Amiri', 'serif']
+                        sans: ['Tajawal', 'sans-serif'],
+                        serif: ['Amiri', 'serif']
                     }
                 }
             }
@@ -38,659 +35,454 @@
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: #0B132B;
+            color: #E2E8F0;
         }
-        .font-quran {
+        .font-serif-custom {
             font-family: 'Amiri', serif;
         }
-        ::-webkit-scrollbar {
-            width: 5px;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        ::-webkit-scrollbar-track {
+        .custom-scrollbar::-webkit-scrollbar-track {
             background: #0B132B;
         }
-        ::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #3A506B;
-            border-radius: 10px;
-        }
-        .scholar-gradient {
-            background: linear-gradient(135deg, #1C2541 0%, #0B132B 100%);
-        }
-        .gold-border {
-            border-color: rgba(212, 175, 55, 0.3);
-        }
-        button, div {
-            -webkit-tap-highlight-color: transparent;
+            border-radius: 4px;
         }
     </style>
 </head>
-<body class="text-gray-100 min-h-screen flex justify-center items-center p-0 md:p-4 select-none">
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar bg-navy">
 
-    <!-- Container Frame -->
-    <div class="w-full h-screen md:h-[92vh] max-w-md md:max-w-xl bg-scholar-card border border-scholar-gold/20 rounded-none md:rounded-3xl flex flex-col relative overflow-hidden shadow-2xl">
-
-        <!-- Top Header Bar -->
-        <header class="p-4 bg-scholar-navy border-b border-scholar-gold/20 flex justify-between items-center z-10 flex-shrink-0">
-            <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="w-10 h-10 rounded-2xl bg-scholar-gold/20 border border-scholar-gold/40 flex items-center justify-center text-scholar-gold text-xl">
-                    <i class="fa-solid fa-graduation-cap"></i>
+    <!-- Header / Navbar -->
+    <header class="bg-slateNavy border-b border-gold/30 sticky top-0 z-50 shadow-lg backdrop-blur bg-opacity-90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <span class="p-2 bg-gold/10 text-gold rounded-lg text-2xl"><i class="fa-solid font-serif-custom">📖</i></span>
+                    <div>
+                        <h1 class="text-xl font-bold text-gold font-serif-custom">منصة طالب العلم</h1>
+                        <p class="text-xs text-gray-400">منظومة إلكترونية متكاملة لخدمة العلوم الشريفة والأكاديمية</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 class="font-bold text-base text-scholar-gold">منصة طالب العلم</h1>
-                    <p class="text-[10px] text-gray-400">خدمة التحصيل الشرعي والبحث العلمي</p>
+                <div id="pwa-install-container" class="hidden">
+                    <button id="pwa-install-btn" class="bg-gold text-navy font-bold px-3 py-1.5 rounded-md text-xs hover:bg-lightGold transition flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-download"></i> تثبيت التطبيق
+                    </button>
                 </div>
             </div>
-            <div class="flex items-center space-x-2 space-x-reverse">
-                <button onclick="toggleTimerModal()" title="مُؤقّت التحصيل" class="px-3 py-1.5 rounded-xl bg-scholar-gold/10 border border-scholar-gold/30 text-scholar-gold text-xs font-bold hover:bg-scholar-gold/20 transition flex items-center space-x-1 space-x-reverse">
-                    <i class="fa-solid fa-hourglass-half"></i>
-                    <span id="header-timer-display">25:00</span>
+        </div>
+    </header>
+
+    <!-- App Navigation Tabs -->
+    <nav class="bg-cardBg border-b border-gray-800 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-2 overflow-x-auto custom-scrollbar">
+            <div class="flex space-x-1 space-x-reverse py-2 min-w-max text-sm">
+                <button onclick="switchTab('library')" id="tab-library" class="tab-btn active text-gold border-b-2 border-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> المكتبة والمتون
+                </button>
+                <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib"></i> كشكول التقريرات
+                </button>
+                <button onclick="switchTab('cards')" id="tab-cards" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group"></i> بطاقات الحفظ
+                </button>
+                <button onclick="switchTab('audio')" id="tab-audio" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-headphones"></i> الدروس الصوتية
+                </button>
+                <button onclick="switchTab('timer')" id="tab-timer" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-clock"></i> مؤقت المدارسة
                 </button>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <!-- Main Scrollable Area -->
-        <main id="main-content" class="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
-            
-            <!-- SECTION 1: Daily Knowledge & Motivation -->
-            <div id="view-home" class="space-y-4">
-                <div class="scholar-gradient p-5 rounded-3xl border border-scholar-gold/30 relative overflow-hidden shadow-lg">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-scholar-gold/20 text-scholar-gold border border-scholar-gold/30">
-                            قاعدة علمية اليوم
-                        </span>
-                        <button onclick="getRandomWisdom()" class="text-xs text-scholar-gold hover:text-white transition" title="تحديث القاعدة">
-                            <i class="fa-solid fa-arrows-rotate"></i>
-                        </button>
-                    </div>
-                    <p id="wisdom-text" class="font-quran text-lg text-amber-100 leading-relaxed text-center my-2">
-                        «العِلْمُ مَقْرُونٌ بِالعَمَلِ، فَمَنْ عَلِمَ عَمِلَ، وَالعِلْمُ يَهْتِفُ بِالعَمَلِ؛ فَإِنْ أَجَابَهُ وَإِلَّا ارْتَحَلَ عَنْهُ»
-                    </p>
-                    <p id="wisdom-author" class="text-[11px] text-scholar-gold text-left mt-2">— أمير المؤمنين علي بن أبي طالب (عليه السلام)</p>
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- 1. LIBRARY SECTION -->
+        <section id="sec-library" class="space-y-6">
+            <div class="bg-cardBg p-4 rounded-xl border border-gray-800 flex flex-col md:flex-row justify-between gap-4">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-gray-400"></i>
+                    <input type="text" id="lib-search" oninput="searchLibrary()" placeholder="ابحث في المتون والكتب الحوزوية والأكاديمية..." class="w-full pr-10 pl-4 py-2.5 bg-navy border border-gray-700 rounded-lg focus:outline-none focus:border-gold text-sm text-gray-200">
                 </div>
-
-                <!-- Academic Tools Grid -->
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="showSection('library')" class="p-4 rounded-2xl bg-scholar-navyLight border border-gray-800 hover:border-scholar-gold/40 transition flex flex-col items-center justify-center text-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl mb-2 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-book-bookmark"></i>
-                        </div>
-                        <span class="font-bold text-sm text-gray-200 mb-0.5">المتون والمكتبة</span>
-                        <span class="text-[10px] text-gray-400">الفقه، الأصول، والحديث</span>
-                    </button>
-
-                    <button onclick="showSection('sanad')" class="p-4 rounded-2xl bg-scholar-navyLight border border-gray-800 hover:border-scholar-gold/40 transition flex flex-col items-center justify-center text-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl mb-2 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-diagram-project"></i>
-                        </div>
-                        <span class="font-bold text-sm text-gray-200 mb-0.5">مشجرة الأسانيد</span>
-                        <span class="text-[10px] text-gray-400">طبقات الرواة والرجال</span>
-                    </button>
-
-                    <button onclick="showSection('cards')" class="p-4 rounded-2xl bg-scholar-navyLight border border-gray-800 hover:border-scholar-gold/40 transition flex flex-col items-center justify-center text-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-scholar-gold text-2xl mb-2 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-clone"></i>
-                        </div>
-                        <span class="font-bold text-sm text-gray-200 mb-0.5">بطاقات المراجعة</span>
-                        <span class="text-[10px] text-gray-400">تثبيت القواعد والمصطلحات</span>
-                    </button>
-
-                    <button onclick="showSection('notes')" class="p-4 rounded-2xl bg-scholar-navyLight border border-gray-800 hover:border-scholar-gold/40 transition flex flex-col items-center justify-center text-center group">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl mb-2 group-hover:scale-110 transition">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </div>
-                        <span class="font-bold text-sm text-gray-200 mb-0.5">كشكول الفوائد</span>
-                        <span class="text-[10px] text-gray-400">تدوين التقريرات والدروس</span>
-                    </button>
-                </div>
-
-                <!-- Study Progress Summary -->
-                <div class="p-4 bg-scholar-navyLight rounded-2xl border border-gray-800 space-y-3">
-                    <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-                        <h3 class="font-bold text-scholar-gold text-sm flex items-center">
-                            <i class="fa-solid fa-chart-line ml-2"></i> إحصائيات تحصيلك العلمي
-                        </h3>
-                        <span id="study-sessions-count" class="text-xs text-gray-400">0 جلسات</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                        <div class="p-2 bg-scholar-navy rounded-xl border border-gray-800">
-                            <span class="block text-scholar-gold font-bold text-sm" id="stat-time">0 د</span>
-                            <span class="text-[10px] text-gray-400">وقت التحصيل</span>
-                        </div>
-                        <div class="p-2 bg-scholar-navy rounded-xl border border-gray-800">
-                            <span class="block text-emerald-400 font-bold text-sm" id="stat-notes">0</span>
-                            <span class="text-[10px] text-gray-400">فوائد مدونة</span>
-                        </div>
-                        <div class="p-2 bg-scholar-navy rounded-xl border border-gray-800">
-                            <span class="block text-purple-400 font-bold text-sm" id="stat-cards">0</span>
-                            <span class="text-[10px] text-gray-400">بطاقات محفوظة</span>
-                        </div>
-                    </div>
+                <div class="flex gap-2">
+                    <button onclick="adjustFontSize(1)" class="bg-slateNavy px-3 py-2 rounded-lg border border-gray-700 text-sm hover:border-gold"><i class="fa-solid fa-font"></i> +</button>
+                    <button onclick="adjustFontSize(-1)" class="bg-slateNavy px-3 py-2 rounded-lg border border-gray-700 text-sm hover:border-gold"><i class="fa-solid fa-font"></i> -</button>
                 </div>
             </div>
 
-            <!-- SECTION 2: Library & Books -->
-            <div id="view-library" class="hidden space-y-3">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-scholar-gold flex items-center">
-                        <i class="fa-solid fa-book ml-2"></i> المكتبة العلمية والمتون
-                    </h2>
-                    <input type="text" id="library-search" onkeyup="filterLibrary()" placeholder="بحث في الكتب..." class="px-3 py-1 bg-scholar-navy border border-gray-800 rounded-xl text-xs focus:outline-none focus:border-scholar-gold w-36">
-                </div>
-                <div id="books-container" class="space-y-2">
-                    <!-- Books Rendered via JS -->
-                </div>
-            </div>
-
-            <!-- SECTION 3: Sanad & Men of Hadith -->
-            <div id="view-sanad" class="hidden space-y-3">
-                <h2 class="text-sm font-bold text-scholar-gold flex items-center">
-                    <i class="fa-solid fa-diagram-project ml-2"></i> مشجرة الأسانيد وطبقات الرجال
-                </h2>
-                <div class="p-3 bg-scholar-navyLight rounded-xl border border-gray-800 space-y-3">
-                    <div class="flex space-x-2 space-x-reverse text-xs">
-                        <button onclick="renderSanadTree('kulayni')" class="px-3 py-1.5 rounded-lg bg-scholar-gold text-scholar-navy font-bold">طريق الكافي</button>
-                        <button onclick="renderSanadTree('tusi')" class="px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700">طريق التهذيب</button>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Book Select Column -->
+                <div class="bg-cardBg p-4 rounded-xl border border-gray-800 space-y-3">
+                    <h3 class="text-gold font-bold font-serif-custom text-lg border-b border-gray-800 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul"></i> قائمه المتون والكتب
+                    </h3>
+                    <div id="book-list" class="space-y-2">
+                        <!-- Dynamic books inserted via JS -->
                     </div>
-                    <div id="sanad-tree-display" class="space-y-2 text-xs">
-                        <!-- Dynamic Tree -->
+                </div>
+
+                <!-- Reader Column -->
+                <div class="md:col-span-2 bg-cardBg p-6 rounded-xl border border-gray-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                        <h2 id="reader-title" class="text-xl font-bold font-serif-custom text-gold">اختر كتاباً أو متناً للبدء</h2>
+                        <span id="reader-category" class="bg-navy text-gold text-xs px-2.5 py-1 rounded-full border border-gold/30">عام</span>
+                    </div>
+                    <div id="reader-content" class="text-gray-300 font-serif-custom leading-relaxed text-lg min-h-[300px] overflow-y-auto max-h-[500px] p-2 custom-scrollbar">
+                        <p class="text-gray-500 text-center py-16">يرجى تحديد إحدى المنظومات أو المناهج الدراسية من القائمة الجانبية لقراءتها ومطالعتها.</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- SECTION 4: Flashcards / Review -->
-            <div id="view-cards" class="hidden space-y-4 text-center py-2">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-scholar-gold">بطاقات تثبيت الحفظ والمصطلحات</h2>
-                    <button onclick="addNewCardModal()" class="text-xs px-2.5 py-1 bg-scholar-gold/20 text-scholar-gold rounded-lg border border-scholar-gold/30">
-                        <i class="fa-solid fa-plus ml-1"></i> بطاقة جديدة
-                    </button>
+        <!-- 2. NOTES SECTION -->
+        <section id="sec-notes" class="hidden space-y-6">
+            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 space-y-4">
+                <h3 class="text-gold font-bold text-lg font-serif-custom flex items-center gap-2">
+                    <i class="fa-solid fa-square-plus"></i> إضافة فائدة أو تقرير علمي جديد
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input type="text" id="note-title" placeholder="عنوان الفائدة / اسم الدرس" class="w-full p-2.5 bg-navy border border-gray-700 rounded-lg text-sm text-gray-200 focus:border-gold outline-none">
+                    <input type="text" id="note-category" placeholder="المادة (مثال: أصول الفقه، منطق، حديث...)" class="w-full p-2.5 bg-navy border border-gray-700 rounded-lg text-sm text-gray-200 focus:border-gold outline-none">
+                </div>
+                <textarea id="note-body" rows="4" placeholder="اكتب نص الفائدة أو التقرير هنا..." class="w-full p-2.5 bg-navy border border-gray-700 rounded-lg text-sm text-gray-200 focus:border-gold outline-none custom-scrollbar"></textarea>
+                <button onclick="saveNote()" class="bg-gold text-navy font-bold px-6 py-2.5 rounded-lg hover:bg-lightGold transition text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> حفظ الفائدة في الكشكول
+                </button>
+            </div>
+
+            <!-- Notes List -->
+            <div class="space-y-4">
+                <h3 class="text-gold font-bold text-lg font-serif-custom border-b border-gray-800 pb-2">
+                    <i class="fa-solid fa-box-archive"></i> الفوائد والتقريرات المحفوظة
+                </h3>
+                <div id="notes-container" class="grid md:grid-cols-2 gap-4">
+                    <!-- Notes rendered dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. FLASHCARDS SECTION -->
+        <section id="sec-cards" class="hidden space-y-6">
+            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 text-center max-w-xl mx-auto space-y-6">
+                <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span id="card-count">بطاقة 1 من 3</span>
+                    <span id="card-topic" class="bg-slateNavy text-gold px-2.5 py-1 rounded">أصول الفقه</span>
                 </div>
                 
-                <div id="flashcard" onclick="flipCard()" class="w-full h-52 bg-scholar-navyLight border-2 border-scholar-gold/40 rounded-3xl p-6 flex flex-col items-center justify-center cursor-pointer transition transform active:scale-95 shadow-xl relative">
-                    <span class="text-[10px] text-gray-500 absolute top-3 right-4">انقر للقلب والكشف</span>
-                    <span id="card-category" class="text-[10px] text-scholar-gold bg-scholar-gold/10 px-2 py-0.5 rounded-full absolute top-3 left-4">فقه</span>
-                    <h3 id="card-question" class="text-base font-bold text-amber-100 font-quran px-2">جاري التحميل...</h3>
-                    <p id="card-answer" class="text-xs text-scholar-gold mt-3 hidden leading-relaxed font-tajawal px-2">
-                        الإجابة هنا...
-                    </p>
+                <!-- Card Display -->
+                <div id="flashcard" onclick="flipCard()" class="cursor-pointer bg-navy border border-gold/40 p-10 rounded-2xl min-h-[220px] flex items-center justify-center shadow-inner transition transform duration-300">
+                    <p id="card-text" class="text-xl font-bold font-serif-custom text-gold text-center">انقر لإظهار الإجابة/التعريف</p>
                 </div>
 
-                <div class="flex justify-between items-center px-4">
-                    <button onclick="prevCard()" class="px-4 py-2 bg-gray-800 text-xs rounded-xl hover:bg-gray-700">السابق</button>
-                    <span id="card-counter" class="text-xs text-gray-400">1 / 3</span>
-                    <button onclick="nextCard()" class="px-4 py-2 bg-scholar-gold text-scholar-navy font-bold text-xs rounded-xl hover:bg-scholar-goldLight">التالي</button>
+                <div class="flex justify-center gap-4">
+                    <button onclick="prevCard()" class="bg-slateNavy hover:bg-navy px-4 py-2 rounded-lg text-sm border border-gray-700"><i class="fa-solid fa-arrow-right"></i> السابق</button>
+                    <button onclick="flipCard()" class="bg-gold/20 text-gold hover:bg-gold hover:text-navy px-6 py-2 rounded-lg text-sm font-bold transition">قلب البطاقة <i class="fa-solid fa-rotate"></i></button>
+                    <button onclick="nextCard()" class="bg-slateNavy hover:bg-navy px-4 py-2 rounded-lg text-sm border border-gray-700">التالي <i class="fa-solid fa-arrow-left"></i></button>
                 </div>
             </div>
+        </section>
 
-            <!-- SECTION 5: Notes / Notebook -->
-            <div id="view-notes" class="hidden space-y-3">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-scholar-gold"><i class="fa-solid fa-book-open-reader ml-2"></i> كشكول الفوائد والتقريرات</h2>
-                    <button onclick="openNoteEditor()" class="text-xs px-2.5 py-1 bg-scholar-gold/20 text-scholar-gold rounded-lg border border-scholar-gold/30 hover:bg-scholar-gold/30 transition">
-                        <i class="fa-solid fa-plus ml-1"></i> إضافة فائدة
+        <!-- 4. AUDIO SECTION -->
+        <section id="sec-audio" class="hidden space-y-6">
+            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 space-y-4">
+                <h3 class="text-gold font-bold text-lg font-serif-custom flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> مشغل الدروس الصوتية التعليمية
+                </h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-navy p-4 rounded-xl border border-gray-800 space-y-3 md:col-span-1">
+                        <h4 class="font-bold text-sm text-gold border-b border-gray-800 pb-2">قائمة الدروس الصوتية</h4>
+                        <div id="audio-list" class="space-y-2 text-sm">
+                            <!-- Dynamic Audio list -->
+                        </div>
+                    </div>
+                    <div class="bg-navy p-6 rounded-xl border border-gray-800 md:col-span-2 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 id="current-audio-title" class="text-lg font-bold text-gold font-serif-custom">اختر درساً صوتياً للتشغيل</h3>
+                            <p id="current-audio-speaker" class="text-xs text-gray-400 mt-1">الشارح / الأستاذ</p>
+                        </div>
+                        <audio id="audio-player" controls class="w-full mt-4"></audio>
+                        <div class="flex items-center gap-4 text-xs text-gray-400 pt-2 border-t border-gray-800">
+                            <span>سرعة التشغيل:</span>
+                            <button onclick="setSpeed(0.75)" class="bg-slateNavy px-2.5 py-1 rounded border border-gray-700 hover:text-gold">0.75x</button>
+                            <button onclick="setSpeed(1.0)" class="bg-slateNavy px-2.5 py-1 rounded border border-gray-700 hover:text-gold">1.0x (طبيعي)</button>
+                            <button onclick="setSpeed(1.25)" class="bg-slateNavy px-2.5 py-1 rounded border border-gray-700 hover:text-gold">1.25x</button>
+                            <button onclick="setSpeed(1.5)" class="bg-slateNavy px-2.5 py-1 rounded border border-gray-700 hover:text-gold">1.5x</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TIMER SECTION -->
+        <section id="sec-timer" class="hidden space-y-6">
+            <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center max-w-lg mx-auto space-y-6">
+                <h3 class="text-gold font-bold text-xl font-serif-custom">مُؤقّت التحصيل والمدارسة (Pomodoro)</h3>
+                <div class="text-6xl font-extrabold text-gold font-mono tracking-wider py-6 bg-navy rounded-2xl border border-gold/20 shadow-inner" id="timer-display">
+                    25:00
+                </div>
+                <div class="flex justify-center gap-3">
+                    <button id="start-timer-btn" onclick="toggleTimer()" class="bg-gold text-navy font-bold px-8 py-3 rounded-lg hover:bg-lightGold transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> بدء الجلسة
                     </button>
-                </div>
-                
-                <div id="notes-container" class="space-y-2">
-                    <!-- Dynamic Notes -->
-                </div>
-            </div>
-
-        </main>
-
-        <!-- Note Editor Modal -->
-        <div id="note-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-            <div class="bg-scholar-card border border-scholar-gold/40 w-full max-w-md rounded-3xl p-5 relative shadow-2xl space-y-3">
-                <button onclick="closeNoteEditor()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <h3 class="text-scholar-gold font-bold text-sm">تدوين فائدة أو تقرير علمي</h3>
-                <input type="text" id="note-title-input" placeholder="عنوان الفائدة (مثال: الفرق بين الورود والحكومة)" class="w-full p-2.5 bg-scholar-navy border border-gray-800 rounded-xl text-xs text-amber-100 focus:outline-none focus:border-scholar-gold">
-                <textarea id="note-body-input" rows="5" placeholder="اكتب نص الفائدة أو الاستدلال الشريف..." class="w-full p-2.5 bg-scholar-navy border border-gray-800 rounded-xl text-xs text-gray-200 focus:outline-none focus:border-scholar-gold leading-relaxed"></textarea>
-                <div class="flex justify-end space-x-2 space-x-reverse">
-                    <button onclick="closeNoteEditor()" class="px-4 py-2 bg-gray-800 text-xs rounded-xl text-gray-300">إلغاء</button>
-                    <button onclick="saveNote()" class="px-4 py-2 bg-scholar-gold text-scholar-navy font-bold text-xs rounded-xl hover:bg-scholar-goldLight">حفظ الفائدة</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add Card Modal -->
-        <div id="card-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-            <div class="bg-scholar-card border border-scholar-gold/40 w-full max-w-md rounded-3xl p-5 relative shadow-2xl space-y-3">
-                <button onclick="closeCardModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-lg">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <h3 class="text-scholar-gold font-bold text-sm">إضافة بطاقة مراجعة جديدة</h3>
-                <input type="text" id="card-cat-input" placeholder="التصنيف (فقه، أصول، حديث...)" class="w-full p-2.5 bg-scholar-navy border border-gray-800 rounded-xl text-xs text-amber-100 focus:outline-none focus:border-scholar-gold">
-                <input type="text" id="card-q-input" placeholder="السؤال / المصطلح" class="w-full p-2.5 bg-scholar-navy border border-gray-800 rounded-xl text-xs text-amber-100 focus:outline-none focus:border-scholar-gold">
-                <textarea id="card-a-input" rows="3" placeholder="الإجابة / الشرح والتوضيح" class="w-full p-2.5 bg-scholar-navy border border-gray-800 rounded-xl text-xs text-gray-200 focus:outline-none focus:border-scholar-gold leading-relaxed"></textarea>
-                <div class="flex justify-end space-x-2 space-x-reverse">
-                    <button onclick="closeCardModal()" class="px-4 py-2 bg-gray-800 text-xs rounded-xl text-gray-300">إلغاء</button>
-                    <button onclick="saveNewCard()" class="px-4 py-2 bg-scholar-gold text-scholar-navy font-bold text-xs rounded-xl hover:bg-scholar-goldLight">إضافة البطاقة</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Book Reading Modal -->
-        <div id="book-modal" class="hidden absolute inset-0 bg-scholar-navy z-50 flex flex-col p-4">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-3">
-                <div>
-                    <h3 id="book-modal-title" class="font-bold text-sm text-scholar-gold"></h3>
-                    <span id="book-modal-sub" class="text-[10px] text-gray-400"></span>
-                </div>
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <button onclick="changeFontSize(1)" class="w-7 h-7 rounded-lg bg-scholar-navyLight border border-gray-800 text-xs text-scholar-gold" title="تكبير الخط">A+</button>
-                    <button onclick="changeFontSize(-1)" class="w-7 h-7 rounded-lg bg-scholar-navyLight border border-gray-800 text-xs text-scholar-gold" title="تصغير الخط">A-</button>
-                    <button onclick="closeBookModal()" class="text-gray-400 hover:text-white p-2 text-lg">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="book-modal-body" class="flex-1 overflow-y-auto font-quran text-base leading-loose text-gray-200 p-2">
-            </div>
-        </div>
-
-        <!-- Pomodoro Study Timer Modal -->
-        <div id="timer-modal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-            <div class="bg-scholar-card border border-scholar-gold/40 w-full max-w-sm rounded-3xl p-6 text-center relative shadow-2xl">
-                <button onclick="toggleTimerModal()" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-                <h3 class="text-scholar-gold font-bold text-lg mb-1">مُؤقّت التحصيل والمدارسة</h3>
-                <p class="text-xs text-gray-400 mb-6">تقسيم الوقت للمذاكرة والتركيز (25 دقيقة)</p>
-
-                <div class="w-36 h-36 mx-auto rounded-full border-4 border-scholar-gold/40 flex flex-col items-center justify-center bg-scholar-navy my-4 shadow-inner">
-                    <span id="modal-timer-display" class="text-4xl font-extrabold text-scholar-gold font-mono">25:00</span>
-                    <span class="text-[10px] text-gray-400 mt-1">جلسة التركيز</span>
-                </div>
-
-                <div class="flex justify-center space-x-3 space-x-reverse mt-6">
-                    <button onclick="toggleStudyTimer()" id="timer-start-btn" class="px-5 py-2 rounded-xl bg-scholar-gold text-scholar-navy font-bold text-xs hover:bg-scholar-goldLight">
-                        بدء الجلسة
-                    </button>
-                    <button onclick="resetStudyTimer()" class="px-4 py-2 rounded-xl bg-gray-800 text-gray-300 text-xs font-bold hover:bg-gray-700">
+                    <button onclick="resetTimer()" class="bg-slateNavy hover:bg-navy text-gray-300 font-bold px-6 py-3 rounded-lg border border-gray-700 text-sm">
                         إعادة ضبط
                     </button>
                 </div>
+                <p class="text-xs text-gray-400">نظام تقسيط ساعات التحصيل العلمي (25 دقيقة مذاكرة + 5 دقائق استراحة).</p>
             </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slateNavy border-t border-gray-800 py-4 text-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4">
+            منصة طالب العلم الشاملة &copy; 2026 - مخصصة لخدمة العلوم والمناهج العلمية
         </div>
+    </footer>
 
-        <!-- Bottom Navigation Bar -->
-        <nav class="h-16 bg-scholar-navy border-t border-scholar-gold/20 flex justify-around items-center px-2 absolute bottom-0 inset-x-0 z-20">
-            <button onclick="showSection('home')" id="nav-home" class="flex flex-col items-center justify-center text-scholar-gold w-full py-1">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[10px] mt-1 font-medium">الرئيسية</span>
-            </button>
-            <button onclick="showSection('library')" id="nav-library" class="flex flex-col items-center justify-center text-gray-400 hover:text-scholar-gold w-full py-1">
-                <i class="fa-solid fa-book-bookmark text-lg"></i>
-                <span class="text-[10px] mt-1 font-medium">المكتبة</span>
-            </button>
-            <button onclick="showSection('sanad')" id="nav-sanad" class="flex flex-col items-center justify-center text-gray-400 hover:text-scholar-gold w-full py-1">
-                <i class="fa-solid fa-diagram-project text-lg"></i>
-                <span class="text-[10px] mt-1 font-medium">الأسانيد</span>
-            </button>
-            <button onclick="showSection('cards')" id="nav-cards" class="flex flex-col items-center justify-center text-gray-400 hover:text-scholar-gold w-full py-1">
-                <i class="fa-solid fa-clone text-lg"></i>
-                <span class="text-[10px] mt-1 font-medium">البطاقات</span>
-            </button>
-            <button onclick="showSection('notes')" id="nav-notes" class="flex flex-col items-center justify-center text-gray-400 hover:text-scholar-gold w-full py-1">
-                <i class="fa-solid fa-pen-to-square text-lg"></i>
-                <span class="text-[10px] mt-1 font-medium">الكشكول</span>
-            </button>
-        </nav>
-
-    </div>
-
-    <!-- Application JavaScript Logic -->
+    <!-- JavaScript Logic -->
     <script>
-        // Wisdom & Quotes Data
-        const wisdomList = [
-            { text: "«العِلْمُ مَقْرُونٌ بِالعَمَلِ، فَمَنْ عَلِمَ عَمِلَ، وَالعِلْمُ يَهْتِفُ بِالعَمَلِ؛ فَإِنْ أَجَابَهُ وَإِلَّا ارْتَحَلَ عَنْهُ»", author: "أمير المؤمنين علي بن أبي طالب (عليه السلام)" },
-            { text: "«تَفَقَّهُوا فِي الدِّينِ، فَإِنَّهُ مَنْ لَمْ يَتَفَقَّهْ مِنْكُمْ فِي الدِّينِ فَهُوَ أَعْرَابِيٌّ»", author: "الإمام محمد الباقر (عليه السلام)" },
-            { text: "«لَوِ يَعْلَمُ النَّاسُ مَا فِي فَضْلِ مَعْرِفَةِ اللَّهِ عَزَّ وَجَلَّ مَا مَدُّوا أَعْيُنَهُمْ إِلَى مَا مُتِّعَ بِهِ الأَعْدَاءُ»", author: "الإمام جعفر الصادق (عليه السلام)" }
-        ];
-
-        // Books Data
+        // Data Structures
         const booksData = [
-            {
-                id: 1,
-                title: "شرائع الإسلام في مسائل الحلال والحرام",
-                author: "المحقق الحلي (قدس سره)",
-                category: "علم الفقه",
-                content: "كتاب الطهارة: وهي إما مائية أو ترابية. وأسباب الوجوب أو الاستحباب ينحصر في الأحداث والخبث... مسائل الوضوء: تجب فيه النية مقارنة للغسل، وغسل الوجه من منابت الشعر إلى الذقن، وغسل اليدين من المرفقين إلى أطراف الأصابع، ومسح مقدم الرأس وبشرة القدمين."
-            },
-            {
-                id: 2,
-                title: "دروس في علم الأصول (الحلقة الأولى)",
-                author: "الشهيد السيد محمد باقر الصدر (قدس سره)",
-                category: "علم الأصول",
-                content: "تعريف علم الأصول: هو العلم بالقواعد الممهدة لاستنباط الأحكام الشرعية. تقسيم الأدلة: تقسم الأدلة إلى أدلة محرزة (شرعية وعقلية) وأصول عملية (الاستصحاب، البراءة، الاحتياط، التخيير). موضوع علم الأصول هو الأدلة المشتركة في الاستدلال الفقهي."
-            },
-            {
-                id: 3,
-                title: "أصول الكافي (كتاب العقل والعلم)",
-                author: "ثقة الإسلام الكليني (قدس سره)",
-                category: "علم الحديث",
-                content: "عن أبي عبد الله (عليه السلام) قال: «إن العلم حياة القلوب ونور الأبصار من العمى وقوة الأبدان من الضعف... بالعلماء يطاع الله ويعبد، وبالعلماء يعرف الله ويوحد، وبالعلماء توصل الأرحام ويعرف الحلال والحرام»."
-            }
+            { id: 1, title: 'معالم الدين وملاذ المجتهدين', category: 'أصول الفقه', content: 'اعلم أن الفقه في اللغة هو الفهم، وفي الاصطلاح الشرايع هو العلم بالأحكام الشرعية الفرعية عن أدلتها التفصيلية. والأدلة الأربعة هي: الكتاب، والسنة، والإجماع، والعقل...' },
+            { id: 2, title: 'المنطق للشيخ المظفر', category: 'المنطق', content: 'الانسان يتألف ذكاؤه من حركة الفكر بين المجهول والمعلوم. والتعريف ينقسم إلى حد وتام وناقص ورسم تام وناقص. والغاية من علم المنطق عصمة الذهن عن الخطأ في الفكر...' },
+            { id: 3, title: 'خلاصة الحكمة والفسلفة', category: 'الفلسفة والحكمة', content: 'موضوع الفلسفة الأولى هو الوجود بما هو وجود. وينقسم الوجود إلى خارجي وذهني، والى واجب وممكن وممتنع...' }
         ];
 
-        // Initial Cards Data
-        let cardsData = JSON.parse(localStorage.getItem('student_cards')) || [
-            {
-                cat: 'حديث',
-                q: 'ما هو "الخبر المتواتر" في علم الحديث؟',
-                a: 'هو ما رواه جماعة يمتنع اتفاقهم وتواطؤهم على الكذب عادة، ويفيد العلم واليقين بصدوره.'
-            },
-            {
-                cat: 'أصول',
-                q: 'ما المقصود بـ "الاستصحاب" في أصول الفقه؟',
-                a: 'هو الحكم ببقاء ما كان على ما كان عليه حتى يثبت الناقل أو الدليل المزيل.'
-            },
-            {
-                cat: 'فقه',
-                q: 'ما الفرق بين الشبهة الحكمية والشبهة الموضوعية؟',
-                a: 'الحكمية: الشك في نفس الحكم الشرعي لعدم النص أو تعارضه. الموضوعية: الشك في مصداق الموضوع الخارجي مع وضوح الحكم.'
-            }
+        const flashcardsData = [
+            { q: 'ما هو تعريف الفقه اصطلاحاً؟', a: 'العلم بالأحكام الشرعية الفرعية عن أدلتها التفصيلية.', topic: 'أصول الفقه' },
+            { q: 'ما هي أقسام التعريف في المنطق؟', a: 'الحد التام، الحد الناقص، الرسم التام، والرسم الناقص.', topic: 'المنطق' },
+            { q: 'ما الفرق بين الواجب والممكن؟', a: 'الواجب ما يقتضي الوجود لذاته، والممكن ما لا يقتضي الوجود ولا عدمه لذاته.', topic: 'الفلسفة' }
         ];
 
-        // Notes Data
-        let notesData = JSON.parse(localStorage.getItem('student_notes')) || [
-            {
-                id: 1,
-                title: 'الفرق بين الحكومة والورود في الأصول',
-                body: 'الورود: إزالة أحد الدليلين لموضوع الدليل الآخر تكويناً وحقيقة بالوجدان (كالاستصحاب مع الدليل الاجتهادي)، أما الحكومة فهي تصرف في عقد الوضع أو المحمول للتوسعة أو التضييق تعبداً.'
-            }
+        const audioLessons = [
+            { id: 1, title: 'مقدمات في علم الأصول - الدرس 01', speaker: 'أستاذ المادة', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+            { id: 2, title: 'قواعد التعريف والمنطق - الدرس 02', speaker: 'أستاذ المادة', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' }
         ];
 
-        let currentCardIndex = 0;
+        let notesData = JSON.parse(localStorage.getItem('student_notes') || '[]');
+        let currentFontSize = 18;
+        let cardIndex = 0;
         let isCardFlipped = false;
-        let bookFontSize = 16;
-        let totalStudySeconds = parseInt(localStorage.getItem('student_study_time')) || 0;
-        let totalSessionsCount = parseInt(localStorage.getItem('student_sessions')) || 0;
 
-        // Study Timer Logic
-        let timerSeconds = 1500;
-        let timerInterval = null;
-        let isTimerRunning = false;
-
-        function getRandomWisdom() {
-            const random = wisdomList[Math.floor(Math.random() * wisdomList.length)];
-            document.getElementById('wisdom-text').textContent = random.text;
-            document.getElementById('wisdom-author').textContent = '— ' + random.author;
-        }
-
-        function showSection(sectionId) {
-            ['view-home', 'view-library', 'view-sanad', 'view-cards', 'view-notes'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('hidden');
+        // Tab Switching
+        function switchTab(tab) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-gold', 'border-gold');
+                btn.classList.add('text-gray-400', 'border-transparent');
             });
 
-            const selected = document.getElementById('view-' + sectionId);
-            if (selected) selected.classList.remove('hidden');
-
-            ['home', 'library', 'sanad', 'cards', 'notes'].forEach(nav => {
-                const navBtn = document.getElementById('nav-' + nav);
-                if (navBtn) {
-                    if (nav === sectionId) {
-                        navBtn.classList.remove('text-gray-400');
-                        navBtn.classList.add('text-scholar-gold');
-                    } else {
-                        navBtn.classList.remove('text-scholar-gold');
-                        navBtn.classList.add('text-gray-400');
-                    }
-                }
-            });
-
-            if (sectionId === 'sanad') renderSanadTree('kulayni');
-            if (sectionId === 'library') renderLibrary();
-            if (sectionId === 'notes') renderNotes();
-            updateStatsUI();
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('text-gold', 'border-gold');
+            activeBtn.classList.remove('text-gray-400', 'border-transparent');
         }
 
-        // Library Logic
-        function renderLibrary() {
-            const container = document.getElementById('books-container');
-            const query = document.getElementById('library-search').value.toLowerCase();
-            container.innerHTML = '';
-
-            booksData.filter(b => b.title.includes(query) || b.author.includes(query) || b.category.includes(query)).forEach(book => {
-                const div = document.createElement('div');
-                div.className = 'p-3 bg-scholar-navyLight rounded-xl border border-gray-800 hover:border-scholar-gold/40 cursor-pointer transition flex justify-between items-center';
-                div.onclick = () => openBook(book.title, `${book.author} — ${book.category}`, book.content);
-                div.innerHTML = `
+        // Library Render & Search
+        function renderBooks(list = booksData) {
+            const container = document.getElementById('book-list');
+            container.innerHTML = list.map(b => `
+                <div onclick="openBook(${b.id})" class="p-3 bg-navy hover:bg-slateNavy rounded-lg cursor-pointer transition border border-gray-800 hover:border-gold/50 flex justify-between items-center">
                     <div>
-                        <h4 class="font-bold text-sm text-amber-100">${book.title}</h4>
-                        <span class="text-[10px] text-gray-400">${book.author} — <span class="text-scholar-gold">${book.category}</span></span>
+                        <h4 class="font-bold text-sm text-gold font-serif-custom">${b.title}</h4>
+                        <span class="text-xs text-gray-400">${b.category}</span>
                     </div>
-                    <i class="fa-solid fa-chevron-left text-xs text-scholar-gold"></i>
-                `;
-                container.appendChild(div);
-            });
+                    <i class="fa-solid fa-chevron-left text-xs text-gray-500"></i>
+                </div>
+            `).join('');
         }
 
-        function filterLibrary() {
-            renderLibrary();
+        function openBook(id) {
+            const book = booksData.find(b => b.id === id);
+            if (!book) return;
+            document.getElementById('reader-title').innerText = book.title;
+            document.getElementById('reader-category').innerText = book.category;
+            document.getElementById('reader-content').innerText = book.content;
         }
 
-        // Sanad Tree Render
-        function renderSanadTree(type) {
-            const container = document.getElementById('sanad-tree-display');
-            if (type === 'kulayni') {
-                container.innerHTML = `
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-scholar-gold/40 text-amber-100 font-bold">1. ثقة الإسلام الكليني (صاحب الكافي)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-gray-800 text-gray-300 mr-3">2. علي بن إبراهيم القمي (ثقة عين)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-gray-800 text-gray-300 mr-6">3. إبراهيم بن هاشم القمي (أول من نشر حديث الكوفيين بقُم)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-gray-800 text-gray-300 mr-9">4. حماد بن عيسى الجهني (من أصحاب الإجماع)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-scholar-gold/30 text-scholar-gold font-bold mr-12">5. الإمام جعفر بن محمد الصادق (عليه السلام)</div>
-                `;
-            } else {
-                container.innerHTML = `
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-scholar-gold/40 text-amber-100 font-bold">1. الشيخ الطوسي (صاحب التهذيب والإستبصار)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-gray-800 text-gray-300 mr-3">2. الشيخ المفيد (محمد بن محمد بن النعمان)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-gray-800 text-gray-300 mr-6">3. أبا القاسم جعفر بن محمد بن قولويه (صاحب كامل الزيارات)</div>
-                    <div class="p-2 bg-scholar-navy rounded-lg border border-scholar-gold/30 text-scholar-gold font-bold mr-9">4. الإمام موسى بن جعفر الكاظم (عليه السلام)</div>
-                `;
-            }
+        function searchLibrary() {
+            const query = document.getElementById('lib-search').value.toLowerCase();
+            const filtered = booksData.filter(b => b.title.toLowerCase().includes(query) || b.content.toLowerCase().includes(query));
+            renderBooks(filtered);
         }
 
-        // Flashcards Logic
-        function updateCardDisplay() {
-            if (cardsData.length === 0) return;
-            const card = cardsData[currentCardIndex];
-            document.getElementById('card-category').textContent = card.cat || 'عام';
-            document.getElementById('card-question').textContent = card.q;
-            document.getElementById('card-answer').textContent = card.a;
-            document.getElementById('card-answer').classList.add('hidden');
-            document.getElementById('card-counter').textContent = `${currentCardIndex + 1} / ${cardsData.length}`;
-            isCardFlipped = false;
+        function adjustFontSize(delta) {
+            currentFontSize = Math.max(14, Math.min(28, currentFontSize + delta));
+            document.getElementById('reader-content').style.fontSize = `${currentFontSize}px`;
         }
 
-        function flipCard() {
-            const ans = document.getElementById('card-answer');
-            isCardFlipped = !isCardFlipped;
-            if (isCardFlipped) {
-                ans.classList.remove('hidden');
-            } else {
-                ans.classList.add('hidden');
-            }
-        }
+        // Notes System
+        function saveNote() {
+            const title = document.getElementById('note-title').value.trim();
+            const category = document.getElementById('note-category').value.trim() || 'عام';
+            const body = document.getElementById('note-body').value.trim();
 
-        function nextCard() {
-            if (cardsData.length === 0) return;
-            currentCardIndex = (currentCardIndex + 1) % cardsData.length;
-            updateCardDisplay();
-        }
-
-        function prevCard() {
-            if (cardsData.length === 0) return;
-            currentCardIndex = (currentCardIndex - 1 + cardsData.length) % cardsData.length;
-            updateCardDisplay();
-        }
-
-        function addNewCardModal() {
-            document.getElementById('card-modal').classList.remove('hidden');
-        }
-
-        function closeCardModal() {
-            document.getElementById('card-modal').classList.add('hidden');
-        }
-
-        function saveNewCard() {
-            const cat = document.getElementById('card-cat-input').value.trim() || 'عام';
-            const q = document.getElementById('card-q-input').value.trim();
-            const a = document.getElementById('card-a-input').value.trim();
-
-            if (q && a) {
-                cardsData.push({ cat, q, a });
-                localStorage.setItem('student_cards', JSON.stringify(cardsData));
-                currentCardIndex = cardsData.length - 1;
-                updateCardDisplay();
-                closeCardModal();
-                document.getElementById('card-q-input').value = '';
-                document.getElementById('card-a-input').value = '';
-                updateStatsUI();
-            }
-        }
-
-        // Notes Logic
-        function renderNotes() {
-            const container = document.getElementById('notes-container');
-            container.innerHTML = '';
-
-            if (notesData.length === 0) {
-                container.innerHTML = `<p class="text-xs text-gray-500 text-center py-4">لا توجد فوائد مدونة حالياً. اضغط أضف فائدة لتدوين مسألة.</p>`;
+            if (!title || !body) {
+                alert('يرجى كتابة العنوان ونص الفائدة.');
                 return;
             }
 
-            notesData.forEach(note => {
-                const div = document.createElement('div');
-                div.className = 'p-3 bg-scholar-navyLight rounded-xl border border-gray-800 relative group';
-                div.innerHTML = `
-                    <div class="flex justify-between items-center mb-1">
-                        <h4 class="font-bold text-xs text-scholar-gold">${note.title}</h4>
-                        <button onclick="deleteNote(${note.id})" class="text-red-400 hover:text-red-300 text-xs px-1">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                    <p class="text-[11px] text-gray-300 leading-relaxed font-tajawal">${note.body}</p>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function openNoteEditor() {
-            document.getElementById('note-modal').classList.remove('hidden');
-        }
-
-        function closeNoteEditor() {
-            document.getElementById('note-modal').classList.add('hidden');
-        }
-
-        function saveNote() {
-            const title = document.getElementById('note-title-input').value.trim() || 'فائدة علمية';
-            const body = document.getElementById('note-body-input').value.trim();
-
-            if (body) {
-                const newNote = { id: Date.now(), title, body };
-                notesData.unshift(newNote);
-                localStorage.setItem('student_notes', JSON.stringify(notesData));
-                renderNotes();
-                closeNoteEditor();
-                document.getElementById('note-title-input').value = '';
-                document.getElementById('note-body-input').value = '';
-                updateStatsUI();
-            }
+            const newNote = { id: Date.now(), title, category, body, date: new Date().toLocaleDateString('ar-EG') };
+            notesData.unshift(newNote);
+            localStorage.setItem('student_notes', JSON.stringify(notesData));
+            
+            document.getElementById('note-title').value = '';
+            document.getElementById('note-category').value = '';
+            document.getElementById('note-body').value = '';
+            renderNotes();
         }
 
         function deleteNote(id) {
             notesData = notesData.filter(n => n.id !== id);
             localStorage.setItem('student_notes', JSON.stringify(notesData));
             renderNotes();
-            updateStatsUI();
         }
 
-        // Book Reader Modal Logic
-        function openBook(title, sub, body) {
-            document.getElementById('book-modal-title').textContent = title;
-            document.getElementById('book-modal-sub').textContent = sub;
-            const bodyEl = document.getElementById('book-modal-body');
-            bodyEl.textContent = body;
-            bodyEl.style.fontSize = bookFontSize + 'px';
-            document.getElementById('book-modal').classList.remove('hidden');
+        function renderNotes() {
+            const container = document.getElementById('notes-container');
+            if (notesData.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-sm col-span-2 text-center py-6">لا توجد فوائد محفوظة بعد.</p>`;
+                return;
+            }
+            container.innerHTML = notesData.map(n => `
+                <div class="bg-navy p-4 rounded-xl border border-gray-800 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <h4 class="font-bold text-gold text-base font-serif-custom">${n.title}</h4>
+                        <span class="text-xs bg-slateNavy text-gray-300 px-2 py-0.5 rounded border border-gray-700">${n.category}</span>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed font-serif-custom">${n.body}</p>
+                    <div class="flex justify-between items-center text-xs text-gray-500 pt-2 border-t border-gray-800/60">
+                        <span>${n.date}</span>
+                        <button onclick="deleteNote(${n.id})" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> حذف</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function closeBookModal() {
-            document.getElementById('book-modal').classList.add('hidden');
+        // Flashcards System
+        function renderCard() {
+            const card = flashcardsData[cardIndex];
+            document.getElementById('card-count').innerText = `بطاقة ${cardIndex + 1} من ${flashcardsData.length}`;
+            document.getElementById('card-topic').innerText = card.topic;
+            document.getElementById('card-text').innerText = isCardFlipped ? card.a : card.q;
+            document.getElementById('card-text').className = isCardFlipped ? "text-lg font-medium text-gray-200 text-center leading-relaxed" : "text-xl font-bold font-serif-custom text-gold text-center";
         }
 
-        function changeFontSize(delta) {
-            bookFontSize = Math.max(12, Math.min(26, bookFontSize + delta));
-            document.getElementById('book-modal-body').style.fontSize = bookFontSize + 'px';
+        function flipCard() {
+            isCardFlipped = !isCardFlipped;
+            renderCard();
         }
 
-        // Timer Logic
-        function toggleTimerModal() {
-            document.getElementById('timer-modal').classList.toggle('hidden');
+        function nextCard() {
+            isCardFlipped = false;
+            cardIndex = (cardIndex + 1) % flashcardsData.length;
+            renderCard();
         }
 
-        function updateTimerUI() {
+        function prevCard() {
+            isCardFlipped = false;
+            cardIndex = (cardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+            renderCard();
+        }
+
+        // Audio System
+        function renderAudioList() {
+            const container = document.getElementById('audio-list');
+            container.innerHTML = audioLessons.map(a => `
+                <div onclick="playAudio(${a.id})" class="p-2.5 bg-slateNavy hover:bg-navy rounded-lg cursor-pointer border border-gray-800 hover:border-gold/40 flex items-center justify-between">
+                    <div>
+                        <p class="font-bold text-gold text-xs">${a.title}</p>
+                        <p class="text-[10px] text-gray-400">${a.speaker}</p>
+                    </div>
+                    <i class="fa-solid fa-play text-xs text-gold"></i>
+                </div>
+            `).join('');
+        }
+
+        function playAudio(id) {
+            const lesson = audioLessons.find(a => a.id === id);
+            if (!lesson) return;
+            document.getElementById('current-audio-title').innerText = lesson.title;
+            document.getElementById('current-audio-speaker').innerText = lesson.speaker;
+            const player = document.getElementById('audio-player');
+            player.src = lesson.url;
+            player.play();
+        }
+
+        function setSpeed(speed) {
+            document.getElementById('audio-player').playbackRate = speed;
+        }
+
+        // Timer System
+        let timerInterval = null;
+        let timerSeconds = 25 * 60;
+        let isTimerRunning = false;
+
+        function updateTimerDisplay() {
             const mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
             const secs = (timerSeconds % 60).toString().padStart(2, '0');
-            const str = `${mins}:${secs}`;
-            document.getElementById('header-timer-display').textContent = str;
-            document.getElementById('modal-timer-display').textContent = str;
+            document.getElementById('timer-display').innerText = `${mins}:${secs}`;
         }
 
-        function toggleStudyTimer() {
-            const btn = document.getElementById('timer-start-btn');
+        function toggleTimer() {
+            const btn = document.getElementById('start-timer-btn');
             if (isTimerRunning) {
                 clearInterval(timerInterval);
                 isTimerRunning = false;
-                btn.textContent = 'استئناف';
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> استئناف الجلسة`;
             } else {
                 isTimerRunning = true;
-                btn.textContent = 'إيقاف مؤقت';
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i> إيقاف مؤقت`;
                 timerInterval = setInterval(() => {
                     if (timerSeconds > 0) {
                         timerSeconds--;
-                        totalStudySeconds++;
-                        localStorage.setItem('student_study_time', totalStudySeconds);
-                        updateTimerUI();
-                        updateStatsUI();
+                        updateTimerDisplay();
                     } else {
                         clearInterval(timerInterval);
-                        isTimerRunning = false;
-                        totalSessionsCount++;
-                        localStorage.setItem('student_sessions', totalSessionsCount);
-                        alert('انتهت جلسة التحصيل بنجاح! خذ قسطاً من الراحة.');
-                        resetStudyTimer();
+                        alert('انتهت جلسة التحصيل! خذ قسطاً من الراحة.');
+                        resetTimer();
                     }
                 }, 1000);
             }
         }
 
-        function resetStudyTimer() {
+        function resetTimer() {
             clearInterval(timerInterval);
             isTimerRunning = false;
-            timerSeconds = 1500;
-            updateTimerUI();
-            document.getElementById('timer-start-btn').textContent = 'بدء الجلسة';
+            timerSeconds = 25 * 60;
+            updateTimerDisplay();
+            document.getElementById('start-timer-btn').innerHTML = `<i class="fa-solid fa-play"></i> بدء الجلسة`;
         }
 
-        function updateStatsUI() {
-            const mins = Math.floor(totalStudySeconds / 60);
-            document.getElementById('stat-time').textContent = `${mins} د`;
-            document.getElementById('stat-notes').textContent = notesData.length;
-            document.getElementById('stat-cards').textContent = cardsData.length;
-            document.getElementById('study-sessions-count').textContent = `${totalSessionsCount} جلسات`;
-        }
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwa-install-container').classList.remove('hidden');
+        });
 
-        // Init App
-        window.onload = function() {
-            updateCardDisplay();
-            updateTimerUI();
-            updateStatsUI();
-            renderLibrary();
+        document.getElementById('pwa-install-btn')?.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    deferredPrompt = null;
+                    document.getElementById('pwa-install-container').classList.add('hidden');
+                });
+            }
+        });
+
+        // Initialize App
+        window.onload = () => {
+            renderBooks();
+            renderNotes();
+            renderCard();
+            renderAudioList();
         };
     </script>
 </body>
