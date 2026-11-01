@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة باحث المخطوطات والنوادر</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E293B',
+                        accent: '#0F172A',
+                        gold: '#C5A059',
+                        lightGold: '#E6C579',
+                        cardBg: '#131C31'
+                    },
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                        serif: ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #0F172A; color: #F1F5F9; }
+        .font-serif-custom { font-family: 'Amiri', serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-slate-950">
+
+    <!-- Header -->
+    <header class="bg-slate-900 border-b border-amber-500/30 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <span class="p-2 bg-amber-500/10 text-amber-400 rounded-lg text-2xl"><i class="fa-solid fa-scroll"></i></span>
+                <div>
+                    <h1 class="text-lg font-bold text-amber-400 font-serif-custom">منصة باحث المخطوطات والنوادر</h1>
+                    <p class="text-xs text-slate-400">نظام متطور لتحليل ومقارنة النصوص والتراث</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs bg-slate-800 text-amber-300 px-3 py-1 rounded-full border border-amber-500/20">إصدار تجريبي 1.0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-slate-900/80 border-b border-slate-800 sticky top-16 z-40 backdrop-blur">
+        <div class="max-w-7xl mx-auto px-2 flex space-x-1 space-x-reverse overflow-x-auto py-2 text-sm">
+            <button onclick="switchTab('manuscripts')" id="tab-manuscripts" class="tab-btn active text-amber-400 border-b-2 border-amber-400 px-4 py-2 font-medium flex items-center gap-2">
+                <i class="fa-solid fa-book-open"></i> استعراض المخطوطات
+            </button>
+            <button onclick="switchTab('compare')" id="tab-compare" class="tab-btn text-slate-400 border-b-2 border-transparent hover:text-amber-400 px-4 py-2 font-medium flex items-center gap-2">
+                <i class="fa-solid fa-columns"></i> مقارنة النسخ والنصوص
+            </button>
+            <button onclick="switchTab('citations')" id="tab-citations" class="tab-btn text-slate-400 border-b-2 border-transparent hover:text-amber-400 px-4 py-2 font-medium flex items-center gap-2">
+                <i class="fa-solid fa-quote-left"></i> مولد الهوامش والإحالات
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- 1. MANUSCRIPTS SECTION -->
+        <section id="sec-manuscripts" class="space-y-6">
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <h3 class="text-amber-400 font-bold font-serif-custom text-base border-b border-slate-800 pb-2">فهرس الوثائق والمخطوطات</h3>
+                    <div id="manuscript-list" class="space-y-2">
+                        <!-- Dynamic items -->
+                    </div>
+                </div>
+                <div class="md:col-span-2 bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h2 id="m-title" class="text-xl font-bold font-serif-custom text-amber-400">اختر وثيقة للاستعراض</h2>
+                        <span id="m-status" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded">معتمد</span>
+                    </div>
+                    <div id="m-content" class="text-slate-300 font-serif-custom leading-relaxed text-lg min-h-[350px] overflow-y-auto max-h-[550px] p-2">
+                        <p class="text-slate-500 text-center py-20">يرجى اختيار مخطوطة أو وثيقة من القائمة الجانبية لقراءتها وتحليلها.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. COMPARE SECTION -->
+        <section id="sec-compare" class="hidden space-y-6">
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                <h3 class="text-amber-400 font-bold font-serif-custom text-lg">أداة مقارنة المتون والفروق النسخية</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400">النسخة الأولى (الأصل / النسخة الأم):</label>
+                        <textarea id="text-a" rows="6" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 outline-none focus:border-amber-500" placeholder="الصق النص الأول هنا..."></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-400">النسخة الثانية (نسخة المقابلة):</label>
+                        <textarea id="text-b" rows="6" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 outline-none focus:border-amber-500" placeholder="الصق النص الثاني للمقارنة هنا..."></textarea>
+                    </div>
+                </div>
+                <button onclick="compareTexts()" class="bg-amber-500 text-slate-950 font-bold px-6 py-2.5 rounded-lg hover:bg-amber-400 transition text-sm">
+                    <i class="fa-solid fa-code-compare"></i> تنفيذ التحليل والمقارنة
+                </button>
+                <div id="compare-result" class="p-4 bg-slate-950 rounded-lg border border-slate-800 text-slate-300 font-serif-custom min-h-[100px]">
+                    نتائج المقارنة ستظهر هنا...
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CITATIONS SECTION -->
+        <section id="sec-citations" class="hidden space-y-6">
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4 max-w-xl mx-auto">
+                <h3 class="text-amber-400 font-bold font-serif-custom text-lg text-center">مولد الهوامش والإحالات العلمية</h3>
+                <div class="space-y-3">
+                    <input type="text" id="c-author" placeholder="اسم المؤلف (مثال: الكليني، الطوسي...)" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 outline-none">
+                    <input type="text" id="c-book" placeholder="اسم الكتاب أو المصدر" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 outline-none">
+                    <input type="text" id="c-part" placeholder="الجزء / الصفحة / الرقم" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-sm text-slate-200 outline-none">
+                    <button onclick="generateCitation()" class="w-full bg-amber-500 text-slate-950 font-bold py-3 rounded-lg hover:bg-amber-400 transition text-sm">
+                        توليد صيغة الهامش الأكاديمي
+                    </button>
+                </div>
+                <div id="citation-output" class="p-4 bg-slate-950 rounded-lg border border-slate-800 text-amber-300 font-serif-custom text-center text-lg">
+                    [سيظهر الهامش الجاهز للنسخ هنا]
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-400">
+        منصة باحث المخطوطات والنوادر &copy; 2026 - نظام بحثي متقدم
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        const manuscriptsData = [
+            { id: 1, title: 'نسخة خطية من كتاب الكافي (القرن الحادي عشر)', author: 'مخطوطة نادرة معتمدة', content: 'بسم الله الرحمن الرحيم... الحمد لله رب العالمين... اعلم أيردك الله سداده أن العلم أفضل الخصال...' },
+            { id: 2, title: 'رسالة في الأصول العملية (خط المؤلف)', author: 'نسخة فريدة مقابلة على الأصل', content: 'المقدمة: إن البحث في حجية الظن يقع في صقعين، الأول في الإمكان والثاني في الوقوع...' }
+        ];
+
+        function switchTab(tab) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-amber-400', 'border-amber-400');
+                btn.classList.add('text-slate-400', 'border-transparent');
+            });
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('text-amber-400', 'border-amber-400');
+            activeBtn.classList.remove('text-slate-400', 'border-transparent');
+        }
+
+        function renderManuscripts() {
+            const container = document.getElementById('manuscript-list');
+            container.innerHTML = manuscriptsData.map(m => `
+                <div onclick="openManuscript(${m.id})" class="p-3 bg-slate-950 hover:bg-slate-800 rounded-lg cursor-pointer transition border border-slate-800">
+                    <h4 class="font-bold text-sm text-amber-400 font-serif-custom">${m.title}</h4>
+                    <span class="text-xs text-slate-400">${m.author}</span>
+                </div>
+            `).join('');
+        }
+
+        function openManuscript(id) {
+            const m = manuscriptsData.find(x => x.id === id);
+            if (!m) return;
+            document.getElementById('m-title').innerText = m.title;
+            document.getElementById('m-content').innerText = m.content;
+        }
+
+        function compareTexts() {
+            const t1 = document.getElementById('text-a').value;
+            const t2 = document.getElementById('text-b').value;
+            const res = document.getElementById('compare-result');
+            if(!t1 || !t2) {
+                res.innerHTML = "يرجى إدخال النصين في الحقلين أعلاه للمقارنة.";
+                return;
+            }
+            if(t1 === t2) {
+                res.innerHTML = "<span class=\"text-emerald-400\">النصان متطابقان تماماً بنسبة 100%.</span>";
+            } else {
+                res.innerHTML = "<span class=\"text-amber-400\">توجد فروق بين النصين:</span><br>النسخة الأولى: " + t1 + "<br><br>النسخة الثانية: " + t2;
+            }
+        }
+
+        function generateCitation() {
+            const author = document.getElementById('c-author').value || 'اسم المؤلف';
+            const book = document.getElementById('c-book').value || 'اسم الكتاب';
+            const part = document.getElementById('c-part').value || 'ص 0';
+            const output = `انظر: ${author}، ${book}، (${part}).`;
+            document.getElementById('citation-output').innerText = output;
+        }
+
+    window.onload = renderManuscripts;
+    </script>
+</body>
+</html>
