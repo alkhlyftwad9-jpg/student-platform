@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة طالب العلم - الشاملة الحديثية</title>
+    <title>منصة طالب العلم - الموسوعة الشاملة</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -54,15 +54,15 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between custom-scrollbar bg-navy">
 
-    <!-- Header / Navbar -->
-    <header class="bg-slateNavy border-b border-gold/30 sticky top-0 z-50 shadow-lg backdrop-blur bg-opacity-90">
+    <!-- Header -->
+    <header class="bg-slateNavy border-b border-gold/30 sticky top-0 z-50 shadow-lg backdrop-blur bg-opacity-95">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center space-x-3 space-x-reverse">
-                    <span class="p-2 bg-gold/10 text-gold rounded-lg text-2xl"><i class="fa-solid font-serif-custom">📖</i></span>
+                    <span class="p-2 bg-gold/10 text-gold rounded-lg text-2xl"><i class="fa-solid font-serif-custom">📚</i></span>
                     <div>
                         <h1 class="text-xl font-bold text-gold font-serif-custom">منصة طالب العلم</h1>
-                        <p class="text-xs text-gray-400">منظومة إلكترونية متكاملة للعلوم والدراسات الحديثية</p>
+                        <p class="text-xs text-gray-400">الموسوعة الحديثية والفقهية لعلوم أهل البيت (ع)</p>
                     </div>
                 </div>
                 <div id="pwa-install-container" class="hidden">
@@ -74,6 +74,295 @@
         </div>
     </header>
 
-    <!-- App Navigation Tabs -->
+    <!-- Navigation Tabs -->
     <nav class="bg-cardBg border-b border-gray-800 sticky top-16 z-40">
-        <div class="max
+        <div class="max-w-7xl mx-auto px-2 overflow-x-auto custom-scrollbar">
+            <div class="flex space-x-1 space-x-reverse py-2 min-w-max text-sm">
+                <button onclick="switchTab('hadith')" id="tab-hadith" class="tab-btn active text-gold border-b-2 border-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-book-quran"></i> موسوعة الحديث والكتب الأربعة
+                </button>
+                <button onclick="switchTab('fiqh')" id="tab-fiqh" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-scale-balanced"></i> المتون الفقهية والأصولية
+                </button>
+                <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-pen-nib"></i> كشكول التقريرات والفوائد
+                </button>
+                <button onclick="switchTab('cards')" id="tab-cards" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group"></i> بطاقات الحفظ والمراجعة
+                </button>
+                <button onclick="switchTab('timer')" id="tab-timer" class="tab-btn text-gray-400 border-b-2 border-transparent hover:text-gold px-4 py-2 font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-clock"></i> مؤقت التحصيل الدراسي
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- 1. HADITH ENCYCLOPEDIA SECTION -->
+        <section id="sec-hadith" class="space-y-6">
+            <div class="bg-cardBg p-4 rounded-xl border border-gray-800 flex flex-col md:flex-row justify-between gap-4">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-gray-400"></i>
+                    <input type="text" id="hadith-search" oninput="searchHadith()" placeholder="ابحث في نصوص الأحاديث، الكتب، أو المؤلفين..." class="w-full pr-10 pl-4 py-2.5 bg-navy border border-gray-700 rounded-lg focus:outline-none focus:border-gold text-sm text-gray-200">
+                </div>
+                <div class="flex gap-2 items-center">
+                    <button onclick="adjustFontSize(1, 'hadith-content')" class="bg-slateNavy px-3 py-2 rounded-lg border border-gray-700 text-sm hover:border-gold text-gold"><i class="fa-solid fa-font"></i> +</button>
+                    <button onclick="adjustFontSize(-1, 'hadith-content')" class="bg-slateNavy px-3 py-2 rounded-lg border border-gray-700 text-sm hover:border-gold text-gold"><i class="fa-solid fa-font"></i> -</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Books List -->
+                <div class="bg-cardBg p-4 rounded-xl border border-gray-800 space-y-3">
+                    <h3 class="text-gold font-bold font-serif-custom text-lg border-b border-gray-800 pb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark"></i> مصادر الحديث الشريف
+                    </h3>
+                    <div id="hadith-book-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Reader Panel -->
+                <div class="md:col-span-2 bg-cardBg p-6 rounded-xl border border-gray-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                        <div>
+                            <h2 id="hadith-title" class="text-xl font-bold font-serif-custom text-gold">اختر مصدراً حديثياً</h2>
+                            <p id="hadith-author" class="text-xs text-gray-400 mt-0.5">المؤلف والاعتبار</p>
+                        </div>
+                        <span id="hadith-category" class="bg-navy text-gold text-xs px-2.5 py-1 rounded-full border border-gold/30">حديث</span>
+                    </div>
+                    <div id="hadith-content" class="text-gray-300 font-serif-custom leading-relaxed text-lg min-h-[350px] overflow-y-auto max-h-[550px] p-2 custom-scrollbar space-y-4">
+                        <p class="text-gray-500 text-center py-20">يرجى اختيار كتاب من القائمة الجانبية لعرض الأبواب والروايات الشريفة متبوعة بسندها ومتنها.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. FIQH & USOOL SECTION -->
+        <section id="sec-fiqh" class="hidden space-y-6">
+            <div class="bg-cardBg p-4 rounded-xl border border-gray-800 flex justify-between items-center">
+                <h3 class="text-gold font-bold font-serif-custom text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-scroll"></i> المتون الحوزوية والفقهية المعتمدة
+                </h3>
+                <div class="flex gap-2">
+                    <button onclick="adjustFontSize(1, 'fiqh-content')" class="bg-slateNavy px-3 py-2 rounded-lg border border-gray-700 text-sm text-gold"><i class="fa-solid fa-font"></i> +</button>
+                    <button onclick="adjustFontSize(-1, 'fiqh-content')" class="bg-slateNavy px-3 py-2 rounded-lg border border-gray-700 text-sm text-gold"><i class="fa-solid fa-font"></i> -</button>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-cardBg p-4 rounded-xl border border-gray-800 space-y-3">
+                    <h3 class="text-gold font-bold font-serif-custom text-base border-b border-gray-800 pb-2">فهرس المتون</h3>
+                    <div id="fiqh-book-list" class="space-y-2"></div>
+                </div>
+                <div class="md:col-span-2 bg-cardBg p-6 rounded-xl border border-gray-800 space-y-4">
+                    <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                        <h2 id="fiqh-title" class="text-xl font-bold font-serif-custom text-gold">اختر متناً أصولياً أو فقهياً</h2>
+                        <span id="fiqh-cat" class="bg-navy text-gold text-xs px-2.5 py-1 rounded-full border border-gold/30">حوزوي</span>
+                    </div>
+                    <div id="fiqh-content" class="text-gray-300 font-serif-custom leading-relaxed text-lg min-h-[350px] overflow-y-auto max-h-[550px] p-2 custom-scrollbar">
+                        <p class="text-gray-500 text-center py-20">حدد كتاباً من القائمة الجانبية لقراءته.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. NOTES SECTION -->
+        <section id="sec-notes" class="hidden space-y-6">
+            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 space-y-4">
+                <h3 class="text-gold font-bold text-lg font-serif-custom flex items-center gap-2">
+                    <i class="fa-solid fa-square-plus"></i> تدوين فائدة أو تقرير بحث خارج جديد
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input type="text" id="note-title" placeholder="عنوان الفائدة أو عنوان الدرس" class="w-full p-2.5 bg-navy border border-gray-700 rounded-lg text-sm text-gray-200 focus:border-gold outline-none">
+                    <input type="text" id="note-category" placeholder="المبحث (مثال: أصول، رجال، فقه الاستدلال...)" class="w-full p-2.5 bg-navy border border-gray-700 rounded-lg text-sm text-gray-200 focus:border-gold outline-none">
+                </div>
+                <textarea id="note-body" rows="4" placeholder="اكتب نص التقرير أو الفائدة العلمية هنا..." class="w-full p-2.5 bg-navy border border-gray-700 rounded-lg text-sm text-gray-200 focus:border-gold outline-none custom-scrollbar"></textarea>
+                <div class="flex gap-3">
+                    <button onclick="saveNote()" class="bg-gold text-navy font-bold px-6 py-2.5 rounded-lg hover:bg-lightGold transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> حفظ في الكشكول
+                    </button>
+                    <button onclick="exportNotes()" class="bg-slateNavy hover:bg-navy text-gold font-bold px-4 py-2.5 rounded-lg border border-gray-700 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-file-arrow-down"></i> تصدير التقريرات كملف
+                    </button>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-gold font-bold text-lg font-serif-custom border-b border-gray-800 pb-2">الفوائد والتقريرات المحفوظة</h3>
+                <div id="notes-container" class="grid md:grid-cols-2 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- 4. FLASHCARDS SECTION -->
+        <section id="sec-cards" class="hidden space-y-6">
+            <div class="bg-cardBg p-6 rounded-xl border border-gray-800 text-center max-w-xl mx-auto space-y-6">
+                <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span id="card-count">بطاقة 1 من 4</span>
+                    <span id="card-topic" class="bg-slateNavy text-gold px-2.5 py-1 rounded">قواعد أصولية</span>
+                </div>
+                <div id="flashcard" onclick="flipCard()" class="cursor-pointer bg-navy border border-gold/40 p-10 rounded-2xl min-h-[220px] flex items-center justify-center shadow-inner transition transform duration-300">
+                    <p id="card-text" class="text-xl font-bold font-serif-custom text-gold text-center">انقر لإظهار وجه البطاقة الآخر</p>
+                </div>
+                <div class="flex justify-center gap-4">
+                    <button onclick="prevCard()" class="bg-slateNavy hover:bg-navy px-4 py-2 rounded-lg text-sm border border-gray-700">السابق</button>
+                    <button onclick="flipCard()" class="bg-gold/20 text-gold hover:bg-gold hover:text-navy px-6 py-2 rounded-lg text-sm font-bold transition">قلب البطاقة</button>
+                    <button onclick="nextCard()" class="bg-slateNavy hover:bg-navy px-4 py-2 rounded-lg text-sm border border-gray-700">التالي</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. TIMER SECTION -->
+        <section id="sec-timer" class="hidden space-y-6">
+            <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center max-w-lg mx-auto space-y-6">
+                <h3 class="text-gold font-bold text-xl font-serif-custom">مُؤقّت التحصيل والبحث العلمي (Pomodoro)</h3>
+                <div class="text-6xl font-extrabold text-gold font-mono tracking-wider py-6 bg-navy rounded-2xl border border-gold/20 shadow-inner" id="timer-display">25:00</div>
+                <div class="flex justify-center gap-3">
+                    <button id="start-timer-btn" onclick="toggleTimer()" class="bg-gold text-navy font-bold px-8 py-3 rounded-lg hover:bg-lightGold transition text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-play"></i> بدء الجلسة
+                    </button>
+                    <button onclick="resetTimer()" class="bg-slateNavy hover:bg-navy text-gray-300 font-bold px-6 py-3 rounded-lg border border-gray-700 text-sm">إعادة ضبط</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slateNavy border-t border-gray-800 py-4 text-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4">
+            منصة طالب العلم الشاملة &copy; 2026 - مخصصة لخدمة التراث الروائي والفقهي لأهل البيت (عليهم السلام)
+        </div>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // موسوعة الحديث الشريف (كتب أهل البيت الإمامية)
+        const hadithBooksData = [
+            {
+                id: 1,
+                title: 'الكافي - أصول الكافي',
+                author: 'ثقة الإسلام الشيخ الكليني (ت 329 هـ)',
+                category: 'الكتب الأربعة',
+                content: `
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-gold font-bold text-lg">كتاب العقل والجهل</h3>
+                        </div>
+                        <div class="p-4 bg-navy rounded-lg border border-gray-800 space-y-2">
+                            <span class="text-xs text-gold font-bold">الحديث الأول:</span>
+                            <p class="text-base leading-relaxed">مُحَمَّدُ بْنُ يَحْيَى، عَنْ أَحْمَدَ بْنِ مُحَمَّدٍ، عَنِ ابْنِ مَحْبُوبٍ، عَنْ هِشَامِ بْنِ سَالِمٍ، عَنْ أَبِي عَبْدِ اللَّهِ (عَلَيْهِ السَّلَامُ) قَالَ: «قَالَ أَمِيرُ الْمُؤْمِنِينَ (عَلَيْهِ السَّلَامُ): هَبَطَ جبرئيل (عَلَيْهِ السَّلَامُ) عَلَى آدَمَ (عَلَيْهِ السَّلَامُ) فَقَالَ: يَا آدَمُ، إِنِّي أُمِرْتُ أَنْ أُخَيِّرَكَ وَاحِدَةً مِنْ ثَلَاثٍ فَتَخْتَارَهَا وَدَعِ الِاثْنَتَيْنِ... فَقَالَ آدَمُ: يَا جبرئيل، وَمَا الثَّلَاثُ؟ فَقَالَ: الْعَقْلُ، وَالْحَيَاءُ، وَالدِّينُ...».</p>
+                        </div>
+                        <div class="p-4 bg-navy rounded-lg border border-gray-800 space-y-2">
+                            <span class="text-xs text-gold font-bold">باب فضل العلم والعلماء:</span>
+                            <p class="text-base leading-relaxed">عَنْ أَبِي عَبْدِ اللَّهِ (عَلَيْهِ السَّلَامُ) قَالَ: «مَنْ سَلَكَ طَرِيقاً يَطْلُبُ فِيهِ عِلْماً سَلَكَ اللَّهُ بِهِ طَرِيقاً إِلَى الْجَنَّةِ، وَإِنَّ الْمَلَائِكَةَ لَتَضَعُ أَجْنِحَتَهَا لِطَالِبِ الْعِلْمِ رِضاً بِه...».</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: 'من لا يحضره الفقيه',
+                author: 'الشيخ الصدوق (ت 381 هـ)',
+                category: 'الكتب الأربعة',
+                content: `
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-gold font-bold text-lg">أبواب الطهارة والمياه</h3>
+                        </div>
+                        <div class="p-4 bg-navy rounded-lg border border-gray-800 space-y-2">
+                            <span class="text-xs text-gold font-bold">حكم المياه:</span>
+                            <p class="text-base leading-relaxed">قَالَ الصَّادِقُ (عَلَيْهِ السَّلَامُ): «الْمَاءُ كُلُّهُ طَاهِرٌ حَتَّى تَعْلَمَ أَنَّهُ قَذِرٌ»، وقال في رواية أخرى: «لا ينجس الماء إلا ما غيّر طعمه أو ريحه أو لونه».</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                title: 'تهذيب الأحكام والاستبصار',
+                author: 'شيخ الطائفة الطوسي (ت 460 هـ)',
+                category: 'الكتب الأربعة',
+                content: `
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-gold font-bold text-lg">كتاب الصلاة - أوقات الصلوات</h3>
+                        </div>
+                        <div class="p-4 bg-navy rounded-lg border border-gray-800 space-y-2">
+                            <span class="text-xs text-gold font-bold">تحديد وقت الظهرين:</span>
+                            <p class="text-base leading-relaxed">عَنْ أَبِي عَبْدِ اللَّهِ (عَلَيْهِ السَّلَامُ) فِي وَقْتِ الظُّهْرِ وَالْعَصْرِ: «إِذَا زَالَتِ الشَّمْسُ فَقَدْ دَخَلَ وَقْتُ الظُّهْرِ والْعَصْرِ جَمِيعاً، إِلَّا أَنَّ هَذِهِ قَبْلَ هَذِهِ».</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                title: 'وسائل الشيعة',
+                author: 'الشيخ الحر العاملي (ت 1104 هـ)',
+                category: 'جوامع تفصيلية',
+                content: `
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-gold font-bold text-lg">مقدمة العبادات - باب وجوب النية والإخلاص</h3>
+                        </div>
+                        <div class="p-4 bg-navy rounded-lg border border-gray-800 space-y-2">
+                            <span class="text-xs text-gold font-bold">حديث الإخلاص:</span>
+                            <p class="text-base leading-relaxed">عَنْ أَمِيرِ الْمُؤْمِنِينَ (عَلَيْهِ السَّلَامُ) قَالَ: «طُوبَى لِمَنْ أَخْلَصَ لِلَّهِ عِبَادَتَهُ وَدُعَاءَهُ، وَلَمْ يَشْغَلْ قَلْبَهُ بِمَا تَرَى الْعُيُونُ...».</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                title: 'بحار الأنوار الجامعة لدرر أخبار الأئمة الأطهار',
+                author: 'العلامة المجلسي (ت 1111 هـ)',
+                category: 'موسوعة كبرى',
+                content: `
+                    <div class="space-y-6">
+                        <div class="border-b border-gray-800 pb-3">
+                            <h3 class="text-gold font-bold text-lg">كتاب التوحيد ومعرفة الإمام</h3>
+                        </div>
+                        <div class="p-4 bg-navy rounded-lg border border-gray-800 space-y-2">
+                            <span class="text-xs text-gold font-bold">في معرفة الواجِب الوجود:</span>
+                            <p class="text-base leading-relaxed">عن الإام الرضا (عليه السلام) في حديث طويل في التوحيد: «أَوَّلُ الْعِبَادَةِ مَعْرِفَتُهُ، وَأَصْلُ مَعْرِفَتِهِ تَوْحِيدُهُ...».</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        // المتون الفقهية والأصولية
+        const fiqhBooksData = [
+            {
+                id: 1,
+                title: 'حلقة اصول الفقه (الحلقة الأولى - الشهيد الصدر)',
+                category: 'أصول الفقه',
+                content: `
+                    <div class="space-y-4">
+                        <h3 class="text-gold font-bold text-lg">مدخل علم الأصول وتعاريفه</h3>
+                        <p class="text-base leading-relaxed">علم الأصول هو العلم بالعناصر المشتركة في عملية استنباط الحكم الشرعي. وهو يمثل اللوجستيات الفكرية للمجتهد لاستنباط الأحكام الفرعية من أدلتها التفصيلية...</p>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: 'اللمعة الدمشقية في الفقه الإمامي',
+                category: 'الفقه الاستدلالي',
+                content: `
+                    <div class="space-y-4">
+                        <h3 class="text-gold font-bold text-lg>كتاب الطهارة</h3>
+                        <p class="text-base leading-relaxed">الماء إما مطلق أو مضاف. المطلق ما يصح تقييده بالماء بلا إضافة، وهو أقسام: كرّ ومقدار كرّ، وقليل... والكرّ هو ما بلغ مساحته ثلاثة أشيال في مثله عمقاً ومساحة...</p>
+                    </div>
+                `
+            }
+        ];
+
+        const flashcardsData = [
+            { q: 'ما هي الكتب الأربعة المعتمدة عند الإمامية الإثني عشرية؟', a: '1. الكافي (الكليني)\n2. من لا يحضره الفقيه (الصدوق)\n3. تهذيب الأحكام (الطوسي)\n4. الاستبصار فيما اختلف فيه الأخبار (الطوسي)', topic: 'علوم الحديث' },
+            { q: 'ما هو تعريف حجية خبر الواحد عند المشهور؟', a: 'بناء العقلاء على العمل بخبر الثقة الموثوق بصدوره عن المعصوم (ع).', topic: 'أصول الفقه' },
+            { q: 'ما الفرق بين الأصول والمقدمات في بحوث علم الرجال؟', a: 'الأصول هي الكتب الرجالية الأربعة الأساسية (رجال النجاشي، الفهرست، الكشي، الضعفاء)، والمقدمات هي المتأخرة عنها.', topic: 'علم الرجال' }
+        ];
+
+        let notesData = JSON.parse(localStorage.getItem('student_notes') || '[]');
+        let cardIndex = 0;
+        let isCardFlipped = false;
+
+        // Tab Switching
+        function switchTab(tab) {
